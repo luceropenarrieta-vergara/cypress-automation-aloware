@@ -1,0 +1,15 @@
+{
+  "name": "cypress-automation-aloware",
+  "version": "1.0.0",
+  "description": "End-to-end UI automation for Aloware using Cypress with a Page Object Model (POM) structure and centralized locators.",
+  "main": "cypress.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^15.14.2"
+  }
+}
