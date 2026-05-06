@@ -36,7 +36,7 @@ jobs:
         run: npx cypress verify
 
       - name: Run Cypress feature files
-        run: npx cypress run --browser chrome --spec "e2e/**/*.cy.js"
+        run: npx cypress run --record --key 531d0c97-2e80-4ec3-bbe6-9980a3193d7c --browser chrome --spec "e2e/**/*.cy.js"
         env:
           # Optional: define these in GitHub repo Secrets for CI overrides.
           CYPRESS_appUrl: ${{ secrets.CYPRESS_APP_URL }}
