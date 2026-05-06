@@ -1,1 +1,145 @@
-# cypress-automation-aloware
+# Cypress Automation - Aloware
+
+End-to-end UI automation for Aloware using Cypress with a Page Object Model (POM) structure and centralized locators.
+
+## Tech Stack
+
+- Cypress (E2E testing)
+- JavaScript (ES modules)
+
+## Project Structure
+
+```text
+cypress-automation-aloware/
+  e2e/
+    spec.cy.js                    # Test scenarios
+  pages/
+    HomePage.js                   # Home page actions/navigation
+    SignUpModal.js                # Sign Up modal actions/assertions
+  locators/
+    homePageLocators.js           # Home page selectors (builder functions)
+    signUpModalLocators.js        # Sign Up modal selectors (builder functions)
+  support/
+    e2e.js                        # Global hooks/config loaded before tests
+    commands.js                   # Custom Cypress commands (if needed)
+  fixtures/
+    example.json
+  cypress.config.js
+  cypress.env.json               # Environment values used by tests
+  README.md
+```
+
+## Setup
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Configure environment values in `cypress.env.json`:
+
+```json
+{
+  "appUrl": "https://aloware.com/",
+  "testEmail": "your-email@example.com"
+}
+```
+
+## Running Tests
+
+Open Cypress UI runner:
+
+```bash
+npx cypress open
+```
+
+Run all specs in headless mode:
+
+```bash
+npx cypress run
+```
+
+Run a specific spec:
+
+```bash
+npx cypress run --spec "e2e/spec.cy.js"
+```
+
+## Test Plan
+
+- [Aloware Test Plan](https://docs.google.com/spreadsheets/d/1mVo4DuYK-6wCVoSDv9QHpwSs32Azcyb0/edit?usp=sharing&ouid=117397008720713631756&rtpof=true&sd=true)
+
+## Test Architecture
+
+### 1) Global test start URL
+
+`support/e2e.js` contains a global `beforeEach`:
+
+- Visits `Cypress.env('appUrl')` before every test.
+- Keeps each test consistent and independent.
+
+### 2) Page Object Model
+
+#### `HomePage`
+
+- Owns navigation from homepage to Sign Up modal via `goToSignUpModal()`.
+- Resolves the signup link and handles cross-origin navigation with `cy.origin(...)`.
+- Stores the signup origin in `Cypress.env('signUpOrigin')` for modal interactions.
+
+#### `SignUpModal`
+
+- Contains focused, reusable methods for:
+  - Visibility checks
+  - Field input actions
+  - Click actions
+  - Error message assertions
+- Executes modal actions inside signup origin context through `inSignUpOrigin(...)`.
+
+### 3) Centralized Locators
+
+Selectors are isolated in `locators/`:
+
+- `homePageLocators.js`
+- `signUpModalLocators.js`
+
+Locators are defined as functions (including parameterized builders), for example:
+
+- `byPlaceholder(value)`
+- `byClassName(value)`
+- `byType(value)`
+
+This allows locator updates in one place and supports future dynamic selectors without refactoring page methods.
+
+## Cross-Origin Handling
+
+The signup flow may navigate away from the base domain. To avoid Cypress origin errors:
+
+- Home page navigation to signup is wrapped in `cy.origin(...)`.
+- Sign Up modal methods run within the stored signup origin via `inSignUpOrigin(...)`.
+
+If you see origin-related failures, make sure tests call `homePage.goToSignUpModal()` before using `signUpModal` methods.
+
+## Current Scenarios in `spec.cy.js`
+
+- Verify Sign Up modal fields/components are visible.
+- Verify no validation errors for valid input.
+- Verify validation errors for invalid input.
+
+## Maintenance Guidelines
+
+- Add new selectors only in locator files.
+- Keep page methods single-responsibility (one goal per method).
+- Keep specs high-level and readable by orchestrating page methods.
+- Prefer assertions scoped to expected UI behavior and messages.
+
+## Troubleshooting
+
+- **"not navigated to expected origin"**  
+  Ensure interactions are executed through `signUpModal` methods (which wrap `cy.origin`) and that `goToSignUpModal()` is executed first.
+
+- **Unhandled app error: "Failed to fetch"**  
+  This is handled in the signup navigation flow; confirm the flow starts via `HomePage.goToSignUpModal()`.
+
+- **Selector stopped working**  
+  Update selector in `locators/*` only; page/spec code should not need changes.

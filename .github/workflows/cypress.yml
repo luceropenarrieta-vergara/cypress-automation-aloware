@@ -1,0 +1,60 @@
+name: Cypress E2E
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
+
+      - name: Verify Cypress binary
+        run: npx cypress verify
+
+      - name: Run Cypress feature files
+        run: npx cypress run --spec "e2e/**/*.cy.js"
+        env:
+          # Optional: define these in GitHub repo Secrets for CI overrides.
+          CYPRESS_appUrl: ${{ secrets.CYPRESS_APP_URL }}
+          CYPRESS_testEmail: ${{ secrets.CYPRESS_TEST_EMAIL }}
+
+      - name: Upload Cypress screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-screenshots
+          path: screenshots
+          if-no-files-found: ignore
+
+      - name: Upload Cypress videos
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-videos
+          path: videos
+          if-no-files-found: ignore
