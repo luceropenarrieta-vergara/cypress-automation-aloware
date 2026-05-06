@@ -2,32 +2,15 @@
 
 End-to-end UI automation for Aloware using Cypress with a Page Object Model (POM) structure and centralized locators.
 
-## Tech Stack
+## Test Plan
 
-- Cypress (E2E testing)
-- JavaScript (ES modules)
+- [Aloware Test Plan](https://docs.google.com/spreadsheets/d/1mVo4DuYK-6wCVoSDv9QHpwSs32Azcyb0/edit?usp=sharing&ouid=117397008720713631756&rtpof=true&sd=true)
 
-## Project Structure
+## Current Scenarios in `spec.cy.js`
 
-```text
-cypress-automation-aloware/
-  e2e/
-    spec.cy.js                    # Test scenarios
-  pages/
-    HomePage.js                   # Home page actions/navigation
-    SignUpModal.js                # Sign Up modal actions/assertions
-  locators/
-    homePageLocators.js           # Home page selectors (builder functions)
-    signUpModalLocators.js        # Sign Up modal selectors (builder functions)
-  support/
-    e2e.js                        # Global hooks/config loaded before tests
-    commands.js                   # Custom Cypress commands (if needed)
-  fixtures/
-    example.json
-  cypress.config.js
-  cypress.env.json               # Environment values used by tests
-  README.md
-```
+- Verify Sign Up modal fields/components are visible.
+- Verify no validation errors for valid input.
+- Verify validation errors for invalid input.
 
 ## Setup
 
@@ -64,6 +47,33 @@ Run a specific spec:
 
 ```bash
 npx cypress run --spec "e2e/spec.cy.js"
+```
+
+## Tech Stack
+
+- Cypress (E2E testing)
+- JavaScript (ES modules)
+
+## Project Structure
+
+```text
+cypress-automation-aloware/
+  e2e/
+    spec.cy.js                    # Test scenarios
+  pages/
+    HomePage.js                   # Home page actions/navigation
+    SignUpModal.js                # Sign Up modal actions/assertions
+  locators/
+    homePageLocators.js           # Home page selectors (builder functions)
+    signUpModalLocators.js        # Sign Up modal selectors (builder functions)
+  support/
+    e2e.js                        # Global hooks/config loaded before tests
+    commands.js                   # Custom Cypress commands (if needed)
+  fixtures/
+    example.json
+  cypress.config.js
+  cypress.env.json                # Environment values used by tests
+  README.md
 ```
 
 ## GitHub Actions CI Guide
@@ -110,10 +120,6 @@ npx cypress run --browser chrome --spec "e2e/**/*.cy.js"
   - Ensure test files match `e2e/**/*.cy.js`.
 - **No screenshots/videos artifact**
   - Artifacts only appear when files are produced during execution.
-
-## Test Plan
-
-- [Aloware Test Plan](https://docs.google.com/spreadsheets/d/1mVo4DuYK-6wCVoSDv9QHpwSs32Azcyb0/edit?usp=sharing&ouid=117397008720713631756&rtpof=true&sd=true)
 
 ## Test Architecture
 
@@ -164,12 +170,6 @@ The signup flow may navigate away from the base domain. To avoid Cypress origin 
 - Sign Up modal methods run within the stored signup origin via `inSignUpOrigin(...)`.
 
 If you see origin-related failures, make sure tests call `homePage.goToSignUpModal()` before using `signUpModal` methods.
-
-## Current Scenarios in `spec.cy.js`
-
-- Verify Sign Up modal fields/components are visible.
-- Verify no validation errors for valid input.
-- Verify validation errors for invalid input.
 
 ## Maintenance Guidelines
 
