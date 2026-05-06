@@ -66,6 +66,51 @@ Run a specific spec:
 npx cypress run --spec "e2e/spec.cy.js"
 ```
 
+## GitHub Actions CI Guide
+
+This project includes a CI workflow at `.github/workflows/cypress.yml` that runs Cypress tests automatically.
+
+### When CI runs
+
+- On every `push` to `main`
+- On every `pull_request` targeting `main`
+- Manually via **Run workflow** (`workflow_dispatch`)
+
+### Browser and execution details
+
+- CI runs tests in **Chrome** by default.
+- Command used in workflow:
+
+```bash
+npx cypress run --browser chrome --spec "e2e/**/*.cy.js"
+```
+
+### Where to see CI job results
+
+1. Open your repository in GitHub.
+2. Click the **Actions** tab.
+3. Select workflow **Cypress E2E**.
+4. Open the latest run to review:
+   - Job status (pass/fail)
+   - Step-by-step logs
+   - Failed test details and stack traces
+5. Download artifacts (if available):
+   - `cypress-screenshots`
+   - `cypress-videos`
+
+### Quick troubleshooting
+
+- **Workflow fails before tests start**
+  - Verify `package.json` and `package-lock.json` exist in repo root.
+- **Env values not applied**
+  - Confirm GitHub secrets are set with exact names:
+    - `CYPRESS_APP_URL`
+    - `CYPRESS_TEST_EMAIL`
+- **Specs not found**
+  - Ensure test files match `e2e/**/*.cy.js`.
+- **No screenshots/videos artifact**
+  - Artifacts only appear when files are produced during execution.
+
 ## Test Plan
 
 - [Aloware Test Plan](https://docs.google.com/spreadsheets/d/1mVo4DuYK-6wCVoSDv9QHpwSs32Azcyb0/edit?usp=sharing&ouid=117397008720713631756&rtpof=true&sd=true)
