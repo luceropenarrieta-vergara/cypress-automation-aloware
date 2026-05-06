@@ -112,6 +112,8 @@ npx cypress run --browser chrome --spec "e2e/**/*.cy.js"
 
 This project is integrated with the Cypress Cloud Dashboard, where execution results will be tracked. You can access the dashboard using the following link: [Cypress Cloud Dashboard](https://cloud.cypress.io/projects/hokhdi/runs?branches=%5B%5D&committers=%5B%5D&flaky=%5B%5D&page=1&status=%5B%5D&tags=%5B%5D&tagsMatch=ANY&timeRange=%7B%22startDate%22%3A%222025-05-06%22%2C%22endDate%22%3A%222026-05-06%22%2C%22id%22%3A%22LAST_12_MONTHS%22%7D).
 
+<img width="3820" height="1866" alt="image" src="https://github.com/user-attachments/assets/69ec207f-b31f-48b6-a0a0-2fb6b465b6f6" />
+
 ### Cypress Cloud Credentials
 
 Currently, the project is public. If you already have an account with Cypress Cloud, you should be able to access it. However, if you encounter any issues, please sign up using this link: [Cypress Cloud Sign-Up](https://cloud.cypress.io/signup).
